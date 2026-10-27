@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>費用シミュレーター（サンプル）</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #f6f7f8; color: #1c1c1c; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #555; font-size: 14px; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
+  label { display: block; font-size: 13px; margin: 8px 0 2px; }
+  input, select { width: 100%; box-sizing: border-box; padding: 5px 7px; font-size: 14px; }
+  .row { display: flex; gap: 8px; margin: 10px 0 4px; flex-wrap: wrap; }
+  button { padding: 5px 10px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 6px 0 14px; }
+  th, td { padding: 4px 6px; border-bottom: 1px solid #eee; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  .tot { display: flex; gap: 12px; margin: 8px 0 12px; flex-wrap: wrap; }
+  .box { flex: 1; min-width: 200px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; }
+  .box b { font-size: 22px; display: block; }
+  .on { background: #e8f5e9; border-color: #a5d6a7; }
+  .off { background: #fff4e5; border-color: #f0c27b; }
+  .over { color: #b3261e; font-weight: 600; }
+  .warn { background: #fff4e5; border: 1px solid #f0c27b; padding: 8px 10px; border-radius: 6px; font-size: 13px; margin-bottom: 10px; }
+  .err { background: #fdecea; border-color: #e5a29b; }
+  .foot { font-size: 12px; color: #666; margin-top: 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>費用シミュレーター（サンプル）</h1>
+  <div class="sub">1か月の使用量を入れると、スペンドキャップON/OFFの請求と、キャップが守らない項目が分かります。目安で、見積りではありません。</div>
+  <div id="banner"></div>
+  <div class="grid">
+    <form class="card" id="form" autocomplete="off">
+      <label for="plan">プラン</label>
+      <select id="plan"><option value="pro">Pro</option><option value="team">Team</option></select>
+      <label for="projects">動かしているプロジェクト数</label><input id="projects" type="number" min="1" max="50" value="1">
+      <label for="compute">Computeサイズ（各）</label>
+      <select id="compute"><option>micro</option><option>small</option><option>medium</option><option>large</option><option>xl</option></select>
+      <label for="pitr">PITRを付けるプロジェクト数</label><input id="pitr" type="number" min="0" value="0">
+      <label for="domains">独自ドメインの数</label><input id="domains" type="number" min="0" value="0">
+      <hr>
+      <label for="egressGb">通信量 Egress（GB）</label><input id="egressGb" type="number" min="0" step="1" value="50">
+      <label for="cachedGb">キャッシュ通信量（GB）</label><input id="cachedGb" type="number" min="0" step="1" value="20">
+      <label for="storageGb">ファイル保存（GB）</label><input id="storageGb" type="number" min="0" step="1" value="10">
+      <label for="dbGb">データベースの大きさ（GB・全プロジェクト）</label><input id="dbGb" type="number" min="0" step="0.1" value="1">
+      <label for="mau">月間アクティブユーザー</label><input id="mau" type="number" min="0" step="100" value="2000">
+      <label for="rtMessagesM">Realtimeメッセージ（百万）</label><input id="rtMessagesM" type="number" min="0" step="0.1" value="0.5">
+      <label for="rtPeak">Realtime同時接続の最大</label><input id="rtPeak" type="number" min="0" step="10" value="50">
+      <label for="edgeM">Edge Function呼び出し（百万）</label><input id="edgeM" type="number" min="0" step="0.1" value="0.2">
+      <div class="row"><button type="button" id="spike">通信量が10倍になったら？</button><button type="button" id="reset">リセット</button></div>
+    </form>
+    <section class="card" id="result" aria-live="polite"></section>
+  </div>
+  <div class="foot" id="foot"></div>
+</main>
+<script src="sim.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

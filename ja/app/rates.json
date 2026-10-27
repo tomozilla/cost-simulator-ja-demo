@@ -1,0 +1,69 @@
+{
+  "asOf": "2026-10-27",
+  "source": "https://supabase.com/pricing and https://supabase.com/docs/guides/platform/cost-control (read by hand; check again before relying on any number)",
+  "currency": "USD",
+  "plans": {
+    "pro": {
+      "base": 25,
+      "computeCredit": 10,
+      "hasSpendCap": true
+    },
+    "team": {
+      "base": 599,
+      "computeCredit": 10,
+      "hasSpendCap": null
+    }
+  },
+  "compute": {
+    "micro": 10,
+    "small": 15,
+    "medium": 60,
+    "large": 110,
+    "xl": 210
+  },
+  "pitrPerProject": 100,
+  "customDomain": 10,
+  "capped": {
+    "dbGb": {
+      "label": "データベースの大きさ（GB・合計）",
+      "included": 8,
+      "perProject": true,
+      "rate": 0.125
+    },
+    "egressGb": {
+      "label": "通信量 Egress（GB）",
+      "included": 250,
+      "rate": 0.09
+    },
+    "cachedGb": {
+      "label": "キャッシュ通信量（GB）",
+      "included": 250,
+      "rate": 0.03
+    },
+    "storageGb": {
+      "label": "ファイル保存（GB）",
+      "included": 100,
+      "rate": 0.0213
+    },
+    "mau": {
+      "label": "月間アクティブユーザー",
+      "included": 100000,
+      "rate": 0.00325
+    },
+    "rtMessagesM": {
+      "label": "Realtimeメッセージ（百万）",
+      "included": 5,
+      "rate": 2.5
+    },
+    "rtPeak": {
+      "label": "Realtime同時接続の最大",
+      "included": 500,
+      "rate": 0.01
+    },
+    "edgeM": {
+      "label": "Edge Function呼び出し（百万）",
+      "included": 2,
+      "rate": 2
+    }
+  }
+}

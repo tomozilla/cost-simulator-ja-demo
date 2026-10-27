@@ -1,0 +1,19 @@
+{
+  "asOf": "2026-10-27",
+  "source": "https://supabase.com/pricing and https://supabase.com/docs/guides/platform/cost-control (read by hand; check again before relying on any number)",
+  "currency": "USD",
+  "plans": { "pro": { "base": 25, "computeCredit": 10, "hasSpendCap": true }, "team": { "base": 599, "computeCredit": 10, "hasSpendCap": null } },
+  "compute": { "micro": 10, "small": 15, "medium": 60, "large": 110, "xl": 210 },
+  "pitrPerProject": 100,
+  "customDomain": 10,
+  "capped": {
+    "dbGb":        { "label": "Database size (GB, total)", "included": 8,      "perProject": true, "rate": 0.125 },
+    "egressGb":    { "label": "Egress (GB)",               "included": 250,    "rate": 0.09 },
+    "cachedGb":    { "label": "Cached egress (GB)",        "included": 250,    "rate": 0.03 },
+    "storageGb":   { "label": "File storage (GB)",         "included": 100,    "rate": 0.0213 },
+    "mau":         { "label": "Monthly active users",      "included": 100000, "rate": 0.00325 },
+    "rtMessagesM": { "label": "Realtime messages (millions)", "included": 5,   "rate": 2.5 },
+    "rtPeak":      { "label": "Realtime peak connections", "included": 500,    "rate": 0.01 },
+    "edgeM":       { "label": "Edge Function invocations (millions)", "included": 2, "rate": 2 }
+  }
+}
