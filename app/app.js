@@ -35,12 +35,14 @@ function render() {
   const r = Sim.simulate(a, data);
   let html = "";
   if (adjusted.length) html += `<div class="warn">Some answers were empty, negative or not a number, so these were used instead:<br>${adjusted.join("<br>")}</div>`;
-  if (!r.capKnown) html += `<div class="warn">I could not confirm that a spend cap exists on this plan (the pricing page lists it under Pro). The "ON" column below is the Pro behavior; check the docs for your plan.</div>`;
-  html += `<div class="tot"><div class="box on">Spend cap ON<b>${usd(r.capOn.total)}</b>${r.capOn.restricted.length ? "use past the quota is refused for: " + r.capOn.restricted.join(", ") : "nothing refused"}</div>` +
-          `<div class="box off">Spend cap OFF<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "includes " + usd(r.capOff.overage) + " of overage" : "no overage"}</div></div>`;
+  if (!r.hasCap) html += `<div class="warn">Team has no spend cap (docs, read 2026-10-27): use past the quota is billed, never refused, so only one total is shown. I have not run a Team organization myself.</div>`;
+  html += r.capOn
+    ? `<div class="tot"><div class="box on">Spend cap ON<b>${usd(r.capOn.total)}</b>${r.capOn.restricted.length ? "use past the quota is refused for: " + r.capOn.restricted.join(", ") : "nothing refused"}</div>` +
+      `<div class="box off">Spend cap OFF<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "includes " + usd(r.capOff.overage) + " of overage" : "no overage"}</div></div>`
+    : `<div class="tot"><div class="box off">Estimated total (overage is billed)<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "includes " + usd(r.capOff.overage) + " of overage" : "no overage"}</div></div>`;
   html += `<b>Not covered by the cap (charged either way)</b><table>${r.fixed.map((l) => `<tr><td>${l.name}</td><td>${usd(l.usd)}</td></tr>`).join("")}<tr><td><b>Subtotal</b></td><td><b>${usd(r.fixedTotal)}</b></td></tr></table>`;
-  html += `<b>Covered by the cap</b><table><tr><th>Item</th><th>Used</th><th>Included</th><th>Cap ON</th><th>Cap OFF</th></tr>` +
-    r.rows.map((x) => `<tr><td>${x.label}</td><td class="${x.over > 0 ? "over" : ""}">${nf(x.used)}</td><td>${nf(x.included)}</td><td>${x.over > 0 ? "refused past quota" : "ok"}</td><td>${x.overageUsd > 0 ? "+" + usd(x.overageUsd) : "$0"}</td></tr>`).join("") + "</table>";
+  html += `<b>${r.hasCap ? "Covered by the cap" : "Usage items (billed past the quota)"}</b><table><tr><th>Item</th><th>Used</th><th>Included</th>${r.hasCap ? "<th>Cap ON</th><th>Cap OFF</th>" : "<th>Billed</th>"}</tr>` +
+    r.rows.map((x) => `<tr><td>${x.label}</td><td class="${x.over > 0 ? "over" : ""}">${nf(x.used)}</td><td>${nf(x.included)}</td>${r.hasCap ? `<td>${x.over > 0 ? "refused past quota" : "ok"}</td>` : ""}<td>${x.overageUsd > 0 ? "+" + usd(x.overageUsd) : "$0"}</td></tr>`).join("") + "</table>";
   $("result").innerHTML = html;
 }
 

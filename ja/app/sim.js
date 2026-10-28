@@ -31,9 +31,9 @@
 
     return {
       fixed, fixedTotal, rows, blocked,
-      capOn: { total: fixedTotal, restricted: blocked },
+      capOn: plan.hasSpendCap === true ? { total: fixedTotal, restricted: blocked } : null,
       capOff: { total: round(fixedTotal + overageTotal), overage: overageTotal },
-      capKnown: plan.hasSpendCap !== null,
+      hasCap: plan.hasSpendCap === true,
     };
   }
 

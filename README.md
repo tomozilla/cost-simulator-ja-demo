@@ -17,7 +17,7 @@ Page/UI texts and comments are English. Japanese copies (Japanese comments and U
 | `app/sim.js` | Pure calculation (no DOM) |
 | `app/rates.json` | Dated rates and the list of cap-covered items. **Update by hand** |
 | `app/index.html`, `app/app.js` | The page |
-| `app/test.js`, `app/package.json` | 14 checks (`node test.js`) |
+| `app/test.js`, `app/package.json` | 17 checks (`node test.js`) |
 | `ja/app/` | Same app with Japanese comments and UI |
 
 ## Cost
@@ -31,13 +31,13 @@ Page/UI texts and comments are English. Japanese copies (Japanese comments and U
 cd app
 python3 -m http.server 8000
 # open http://localhost:8000/
-node test.js        # 14 checks
+node test.js        # 17 checks
 ```
 
 ## Limits (read this)
 
 - With the cap ON the page shows the **fixed items only** and lists what would be **refused**. It cannot show what the service actually does at the quota (pause, read-only, errors); I did not test that.
-- I could not confirm a spend cap exists on Team (the pricing page lists it under Pro), so for Team the page says so.
+- Team: the docs say the spend cap is "available only with the Pro Plan", and the usage pages say that on Team "you will pay for any overages". So for Team the page shows **one total** (overage is billed, nothing is refused) instead of the ON/OFF pair. Read from the docs on 2026-10-27; **I have not run a Team organization myself**.
 - The cap has no per-item budget and no notification (per the docs). The page does not simulate alerts.
 
 ## What was verified (2026-10-27) and what was not

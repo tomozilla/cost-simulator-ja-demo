@@ -18,7 +18,10 @@ eq("MAU 120k: cap off adds 20000*0.00325 = 65", S.simulate({ ...base, usage: { .
 eq("db included scales per project", S.simulate({ ...base, projects: 2, usage: { ...base.usage, dbGb: 15 } }, data).blocked, []);
 eq("db over per-project allowance is flagged", S.simulate({ ...base, projects: 2, usage: { ...base.usage, dbGb: 17 } }, data).blocked, ["Database size (GB, total)"]);
 eq("exactly at quota is not over", S.simulate({ ...base, usage: { ...base.usage, egressGb: 250 } }, data).blocked, []);
-eq("team: cap availability unknown", S.simulate({ ...base, plan: "team" }, data).capKnown, false);
+eq("team: no spend cap", S.simulate({ ...base, plan: "team" }, data).hasCap, false);
+eq("team: no cap-ON scenario", S.simulate({ ...base, plan: "team" }, data).capOn, null);
+eq("team: overage is billed (MAU 120k: 599 plan + 65 overage, Micro covered by the credit)", S.simulate({ ...base, plan: "team", usage: { ...base.usage, mau: 120000 } }, data).capOff.total, 664);
+eq("pro: has spend cap", S.simulate(base, data).hasCap, true);
 eq("scale helper", S.scale({ egressGb: 10, mau: 5 }, 10, ["egressGb"]), { egressGb: 100, mau: 5 });
 eq("unknown plan throws", (() => { try { S.simulate({ ...base, plan: "x" }, data); } catch (e) { return /Unknown plan/.test(e.message); } })(), true);
 process.exit(fail ? 1 : 0);

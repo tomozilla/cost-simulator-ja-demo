@@ -2,7 +2,7 @@
   "asOf": "2026-10-27",
   "source": "https://supabase.com/pricing and https://supabase.com/docs/guides/platform/cost-control (read by hand; check again before relying on any number)",
   "currency": "USD",
-  "plans": { "pro": { "base": 25, "computeCredit": 10, "hasSpendCap": true }, "team": { "base": 599, "computeCredit": 10, "hasSpendCap": null } },
+  "plans": { "pro": { "base": 25, "computeCredit": 10, "hasSpendCap": true }, "team": { "base": 599, "computeCredit": 10, "hasSpendCap": false } },
   "compute": { "micro": 10, "small": 15, "medium": 60, "large": 110, "xl": 210 },
   "pitrPerProject": 100,
   "customDomain": 10,

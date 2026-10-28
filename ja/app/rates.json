@@ -11,7 +11,7 @@
     "team": {
       "base": 599,
       "computeCredit": 10,
-      "hasSpendCap": null
+      "hasSpendCap": false
     }
   },
   "compute": {

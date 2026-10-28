@@ -35,12 +35,14 @@ function render() {
   const r = Sim.simulate(a, data);
   let html = "";
   if (adjusted.length) html += `<div class="warn">空欄・マイナス・数字以外があったので、次の値で計算しました：<br>${adjusted.join("<br>")}</div>`;
-  if (!r.capKnown) html += `<div class="warn">このプランにスペンドキャップがあるかは確認できていません（料金ページではPro）。下の「ON」はProの挙動です。自分のプランのドキュメントを確認してください。</div>`;
-  html += `<div class="tot"><div class="box on">スペンドキャップ ON<b>${usd(r.capOn.total)}</b>${r.capOn.restricted.length ? "枠を超えると使えなくなる項目：" + r.capOn.restricted.join(", ") : "使えなくなる項目はなし"}</div>` +
-          `<div class="box off">スペンドキャップ OFF<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "超過分 " + usd(r.capOff.overage) + " を含む" : "超過なし"}</div></div>`;
+  if (!r.hasCap) html += `<div class="warn">Teamプランにスペンドキャップはありません（ドキュメント、2026-10-27確認）。枠を超えた分は、使えなくなるのではなく課金されます。そのため合計は1つだけ表示しています。Teamの組織は自分では動かしていません。</div>`;
+  html += r.capOn
+    ? `<div class="tot"><div class="box on">スペンドキャップ ON<b>${usd(r.capOn.total)}</b>${r.capOn.restricted.length ? "枠を超えると使えなくなる項目：" + r.capOn.restricted.join(", ") : "使えなくなる項目はなし"}</div>` +
+      `<div class="box off">スペンドキャップ OFF<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "超過分 " + usd(r.capOff.overage) + " を含む" : "超過なし"}</div></div>`
+    : `<div class="tot"><div class="box off">合計の目安（超過分は課金）<b>${usd(r.capOff.total)}</b>${r.capOff.overage > 0 ? "超過分 " + usd(r.capOff.overage) + " を含む" : "超過なし"}</div></div>`;
   html += `<b>キャップが守らないもの（ON/OFFどちらでもかかる）</b><table>${r.fixed.map((l) => `<tr><td>${l.name}</td><td>${usd(l.usd)}</td></tr>`).join("")}<tr><td><b>小計</b></td><td><b>${usd(r.fixedTotal)}</b></td></tr></table>`;
-  html += `<b>キャップが守るもの</b><table><tr><th>項目</th><th>使用量</th><th>含まれる量</th><th>キャップON</th><th>キャップOFF</th></tr>` +
-    r.rows.map((x) => `<tr><td>${x.label}</td><td class="${x.over > 0 ? "over" : ""}">${nf(x.used)}</td><td>${nf(x.included)}</td><td>${x.over > 0 ? "枠を超えた分は使えない" : "OK"}</td><td>${x.overageUsd > 0 ? "+" + usd(x.overageUsd) : "$0"}</td></tr>`).join("") + "</table>";
+  html += `<b>${r.hasCap ? "キャップが守るもの" : "使用量の項目（枠を超えると課金）"}</b><table><tr><th>項目</th><th>使用量</th><th>含まれる量</th>${r.hasCap ? "<th>キャップON</th><th>キャップOFF</th>" : "<th>課金</th>"}</tr>` +
+    r.rows.map((x) => `<tr><td>${x.label}</td><td class="${x.over > 0 ? "over" : ""}">${nf(x.used)}</td><td>${nf(x.included)}</td>${r.hasCap ? `<td>${x.over > 0 ? "枠を超えた分は使えない" : "OK"}</td>` : ""}<td>${x.overageUsd > 0 ? "+" + usd(x.overageUsd) : "$0"}</td></tr>`).join("") + "</table>";
   $("result").innerHTML = html;
 }
 
